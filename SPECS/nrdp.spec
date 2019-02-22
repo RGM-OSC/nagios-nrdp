@@ -1,6 +1,6 @@
 Name               : nrdp
 Version            : 1.2
-Release            : 0.eon
+Release            : 0.rgm
 Summary            : NRDP module for Nagios
 License            : BSD
 URL                : https://exchange.nagios.org/directory/Addons/Passive-Checks/NRDP--2D-Nagios-Remote-Data-Processor/details
@@ -17,11 +17,11 @@ Requires           : nagios
 
 Provides           : ndrp
 
-%define eondir /srv/eyesofnetwork
-%define datadir %{eondir}/%{name}-%{version}
-%define linkdir %{eondir}/%{name}
+%define rgmdir /srv/rgm
+%define datadir %{rgmdir}/%{name}-%{version}
+%define linkdir %{rgmdir}/%{name}
 %define appuser nagios
-%define appgroup eyesofnetwork
+%define appgroup rgm
 
 %description
 Nagios Remote Data Processor (NDRP) is a flexible data transport mechanism 
@@ -58,7 +58,7 @@ ln -sf %{datadir} %{linkdir}
 cp -p %{_sysconfdir}/httpd/conf/httpd.conf %{_sysconfdir}/httpd/conf/httpd.conf.$(date +%Y%m%d)
 sed -i -r 's/(^Include conf.d\/thruk.conf)/\1\nInclude conf.d\/nrdp.conf\n/' %{_sysconfdir}/httpd/conf/httpd.conf
 cp -p %{_sysconfdir}/php.ini %{_sysconfdir}/php.ini.$(date +%Y%m%d)
-sed -r -i 's/(^open_basedir.*$)/\1:\/srv\/eyesofnetwork\/nrdp/' /etc/php.ini
+sed -r -i 's/(^open_basedir.*$)/\1:\/srv\/rgm\/nrdp/' /etc/php.ini
 service httpd reload >/dev/null 2>&1
 
 %postun
@@ -69,7 +69,7 @@ rm -Rf %{datadir} >/dev/null 2>&1
 cp -p %{_sysconfdir}/httpd/conf/httpd.conf %{_sysconfdir}/httpd/conf/httpd.conf.$(date +%Y%m%d)
 sed -i -r 's/^Include conf\.d\/nrdp\.conf$//' /etc/httpd/conf/httpd.conf
 cp -p %{_sysconfdir}/php.ini %{_sysconfdir}/php.ini.$(date +%Y%m%d)
-sed -r -i 's/:\/srv\/eyesofnetwork\/nrdp//' /etc/php.ini
+sed -r -i 's/:\/srv\/rgm\/nrdp//' /etc/php.ini
 service httpd reload >/dev/null 2>&1
 
 %clean
@@ -102,5 +102,7 @@ service httpd reload >/dev/null 2>&1
 %{datadir}/LICENSE.TXT
 
 %changelog
+* Fri Feb 22 2019 Michael Aubertin <maubertin@fr.scc.com> - 1.2-0.rgm
+- Initial fork
 * Mon Jul  6 2015 Guillaume ONA <contribution@eyesofnetwork.com> - 1.2-0.eon 
 - Build for EyesOfNetwork
