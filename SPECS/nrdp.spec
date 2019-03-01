@@ -1,5 +1,5 @@
 Name: nrdp
-Version: 1.2
+Version: 1.4
 Release            : 0.rgm
 Summary            : NRDP module for Nagios
 License            : BSD
