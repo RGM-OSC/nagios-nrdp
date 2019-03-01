@@ -3,6 +3,6 @@
 		<checkresult type="host" checktype="1">
 			<hostname>localhost</hostname>
 			<state>2</state>
-			<output>EyesOfNetwork : test send_nrdp.sh|perfdata=1.00;5;10;0</output>
+			<output>RGM : test send_nrdp.sh|perfdata=1.00;5;10;0</output>
 		</checkresult>
 	</checkresults>

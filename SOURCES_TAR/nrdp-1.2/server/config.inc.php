@@ -31,26 +31,26 @@ $cfg["valid_basic_auth_users"]=array(
 // the name of the system group that has write permissions to the external command file
 // this group is also used to set file permissions when writing bulk commands or passive check results
 // NOTE: both the Apache and Nagios users must be a member of this group
-$cfg["nagios_command_group"]="eyesofnetwork";
+$cfg["nagios_command_group"]="rgm";
 
 // full path to Nagios external command file
-$cfg["command_file"]="/srv/eyesofnetwork/nagios/var/log/rw/nagios.cmd";
+$cfg["command_file"]="/srv/rgm/nagios/var/log/rw/nagios.cmd";
 
 // full path to check results spool directory
-$cfg["check_results_dir"]="/srv/eyesofnetwork/nagios/var/log/spool/checkresults";
+$cfg["check_results_dir"]="/srv/rgm/nagios/var/log/spool/checkresults";
 
 // full path to directory where temp scratch files can be written
 // NOTE: the Apache user need to be able create files here, and the Nagios user needs to read/delete those same files, so the /tmp system directory won't work (it has a sticky bit on it)
 $cfg["tmp_dir"]="/var/tmp/ndrp";
 
 // full path to mk-livestatus
-$cfg["mk_livestatus"]="/srv/eyesofnetwork/nagios/var/log/rw/live";
-$cfg["unixcat"]="/srv/eyesofnetwork/mk-livestatus/bin/unixcat";
+$cfg["mk_livestatus"]="/srv/rgm/nagios/var/log/rw/live";
+$cfg["unixcat"]="/srv/rgm/mk-livestatus/bin/unixcat";
 
 ///////// DONT MODIFY ANYTHING BELOW THIS LINE /////////
 
 $cfg['product_name']='nrdp';
-$cfg['product_version']='1.3'
+$cfg['product_version']='1.4'
 
 
 ?>

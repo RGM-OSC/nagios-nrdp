@@ -112,7 +112,7 @@ function nagioscorecmd_submit_live_command($raw=false){
 	 if(!file_exists($cfg["mk_livestatus"]))
 	 	handle_api_error(ERROR_BAD_mk_livestatus_FILE);
 	
-	$live_return = shell_exec('printf "'.$command.'\n" | /srv/eyesofnetwork/mk-livestatus/bin/unixcat /srv/eyesofnetwork/nagios/var/log/rw/live');	
+	$live_return = shell_exec('printf "'.$command.'\n" | /srv/rgm/mk-livestatus/bin/unixcat /srv/rgm/nagios/var/log/rw/live');	
 
 	if ( $fp === "" ) {
 	    $live_return = "Empty return";
