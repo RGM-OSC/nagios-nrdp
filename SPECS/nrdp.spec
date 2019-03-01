@@ -98,7 +98,7 @@ service httpd reload >/dev/null 2>&1
 
 %changelog
 * Fri Mar 01 2019 Michael Aubertin <maubertin@fr.scc.com> - 1.4-0.rgm
-- Update version
+- Update version 
 * Fri Feb 22 2019 Michael Aubertin <maubertin@fr.scc.com> - 1.2-0.rgm
 - Initial fork
 * Mon Jul  6 2015 Guillaume ONA <contribution@eyesofnetwork.com> - 1.2-0.eon 
