@@ -59,65 +59,6 @@ function route_request(){
 	exit();
 	}
 
-
-function submit_nagios_command($raw=false){
-	global $cfg;
-	
-	$command=grab_request_var("command");
-	
-	// make sure we have a command
-	if(!have_value($command))
-		handle_api_error(ERROR_NO_COMMAND);
-
-	// make sure we can write to external command file
-	if(!isset($cfg["command_file"]))
-		handle_api_error(ERROR_NO_COMMAND_FILE);
-	if(!file_exists($cfg["command_file"]))
-		handle_api_error(ERROR_BAD_COMMAND_FILE);
-	if(!is_writeable($cfg["command_file"]))
-		handle_api_error(ERROR_COMMAND_FILE_OPEN_WRITE);
-		
-	// open external command file
-	if(($handle=@fopen($cfg["command_file"],"w+"))===false)
-		handle_api_error(ERROR_COMMAND_FILE_OPEN);
-		
-	// get current time
-	$ts=time();
-		
-	// write the external command(s)
-	$error=false;
-	if(!is_array($command)){
-		if($raw==false)
-			fwrite($handle,"[".$ts."] ");
-		$result=fwrite($handle,$command."\n");
-		//echo "WROTE: ".$request["command"]."<BR>\n";
-		}
-	else{
-		foreach($command as $cmd){
-			if($raw==false)
-				fwrite($handle,"[".$ts."] ");
-			$result=fwrite($handle,$cmd."\n");
-			//echo "WROTE: ".$cmd."<BR>\n";
-			if($result===false)
-				break;
-			}
-		}
-
-	// close the file
-	fclose($handle);
-
-	if($result===false)
-		handle_api_error(ERROR_BAD_WRITE);
-	
-	output_api_header();
-	
-	echo "<result>\n";
-	echo "  <status>0</status>\n";
-	echo "  <message>OK</message>\n";
-	echo "</result>\n";
-	}
-
-	
 function submit_check_data(){
 	global $cfg;
 	global $request;
@@ -259,6 +200,17 @@ function display_form(){
 
 	$mytoken="test";
 ?>
+
+	<strong>Submit LiveStatus Command:</strong><br>
+	<form action="" method="get">
+	<input type="hidden" name="cmd" value="submitlive">
+	Token: <input type="text" name="token" value="c25a488c6bdb787bb09c8789e458e22d" size="15"><br>
+	Command: <input type="text" name="command" size="50" value="GET hosts\nColumns: host_address\nOutputFormat:json\nResponseHeader:fixed16\n"><br>
+	<input type="submit" name="btnSubmit" value="Submit Command">
+	</form>
+	
+	<hr>
+
 	<strong>Submit Nagios Command:</strong><br>
 	<form action="" method="get">
 	<input type="hidden" name="cmd" value="submitcmd">

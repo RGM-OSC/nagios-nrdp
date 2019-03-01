@@ -27,16 +27,11 @@ function nagioscorecmd_process_request($cbtype,$args){
 		case "submitcmd":
 			nagioscorecmd_submit_nagios_command(false);
 			break;
-				// normal nagios external commands
-		case "submitlive":
-			nagioscorecmd_submit_live_command(false);
-			break;
 		// something else we don't handle...
 		default:
 			break;
 		}
 	}
-
 
 function nagioscorecmd_submit_nagios_command($raw=false){
 	global $cfg;
@@ -97,36 +92,6 @@ function nagioscorecmd_submit_nagios_command($raw=false){
 	exit();
 	}
 
-function nagioscorecmd_submit_live_command($raw=false){
-	global $cfg;
 	
-	$command=grab_request_var("command");
-	
-	// // make sure we have a command
-	if(!have_value($command))
-	 	handle_api_error(ERROR_NO_COMMAND);
-
-	// // make sure we can write to external command file
-	 if(!isset($cfg["mk_livestatus"]))
-	 	handle_api_error(ERROR_NO_mk_livestatus_FILE);
-	 if(!file_exists($cfg["mk_livestatus"]))
-	 	handle_api_error(ERROR_BAD_mk_livestatus_FILE);
-	
-	$live_return = shell_exec('printf "'.$command.'\n" | /srv/eyesofnetwork/mk-livestatus/bin/unixcat /srv/eyesofnetwork/nagios/var/log/rw/live');	
-
-	if ( $fp === "" ) {
-	    $live_return = "Empty return";
-	} 
-	
-	output_api_header();
-	
-	echo "<result>\n";
-	echo "  <status>0</status>\n";
-	echo "  <message>".$live_return."</message>\n";
-	echo "</result>\n";
-
-	exit();
-	}
-
 
 ?>
