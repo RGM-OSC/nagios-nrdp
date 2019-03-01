@@ -6,8 +6,6 @@ License            : BSD
 URL                : https://exchange.nagios.org/directory/Addons/Passive-Checks/NRDP--2D-Nagios-Remote-Data-Processor/details
 Source0            : %{name}-%{version}.tar.gz
 
-Patch1             : %{name}-0001-httpd.nrdp.conf.patch
-Patch2             : %{name}-0002-send_nrdp.sh.patch
 
 Group              : Applications/Monitoring
 
@@ -32,8 +30,6 @@ fit individual users' needs. It uses standard ports protocols
 %prep
 %setup -T -b 0 -n %{name}-%{version}
 
-%patch1 -p1
-%patch2 -p1
 
 %build
 
