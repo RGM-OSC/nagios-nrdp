@@ -12,10 +12,9 @@ Patch2             : %{name}-0002-send_nrdp.sh.patch
 Group              : Applications/Monitoring
 
 BuildRoot          : %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
-
 Requires           : nagios
-
 Provides           : ndrp
+
 
 %define rgmdir /srv/rgm
 %define datadir %{rgmdir}/%{name}-%{version}
