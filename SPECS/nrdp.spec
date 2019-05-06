@@ -101,6 +101,7 @@ service httpd reload >/dev/null 2>&1
 * Mon May 06 2019 Eric Belhomme <ebelhomme@fr.scc.com> - 1.4-1.rgm
 - use rgm-macros
 - NRDP token randomizaton during post-install
+- fix apache config file
 
 * Fri Mar 01 2019 Michael Aubertin <maubertin@fr.scc.com> - 1.4-0.rgm
 - Update version
