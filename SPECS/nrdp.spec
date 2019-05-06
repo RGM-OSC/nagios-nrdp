@@ -1,6 +1,6 @@
 Name: nrdp
 Version: 1.4
-Release            : 0.rgm
+Release            : 1.rgm
 Summary            : NRDP module for Nagios
 License            : BSD
 URL                : https://exchange.nagios.org/directory/Addons/Passive-Checks/NRDP--2D-Nagios-Remote-Data-Processor/details
@@ -10,15 +10,13 @@ Source0            : %{name}-%{version}.tar.gz
 Group              : Applications/Monitoring
 
 BuildRoot          : %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
-Requires           : nagios
+Requires           : rgm-base nagios
 Provides           : ndrp
 
 
-%define rgmdir /srv/rgm
-%define datadir %{rgmdir}/%{name}-%{version}
-%define linkdir %{rgmdir}/%{name}
-%define appuser nagios
-%define appgroup rgm
+%define datadir %{rgm_path}/%{name}-%{version}
+%define linkdir %{rgm_path}/%{name}
+
 
 %description
 Nagios Remote Data Processor (NDRP) is a flexible data transport mechanism 
@@ -42,10 +40,10 @@ cp -afpvr %{name}-%{version}/* %{buildroot}%{datadir}
 install -D -m 0644 %{name}-%{version}/%{name}.conf %{buildroot}/%{_sysconfdir}/httpd/conf.d/%{name}.conf
 
 %pre
-getent group %{appgroup} >/dev/null || groupadd -r %{appgroup}
-getent passwd %{appuser} >/dev/null || \
-    useradd -r -g %{appgroup} -d /home/%{appuser} -s /sbin/nologin \
-    -c "%{appuser} user" %{appuser}
+getent group %{rgm_group} >/dev/null || groupadd -r %{rgm_group}
+getent passwd %{rgm_user_nagios} >/dev/null || \
+    useradd -r -g %{rgm_group} -d /home/%{rgm_user_nagios} -s /sbin/nologin \
+    -c "%{rgm_user_nagios} user" %{rgm_user_nagios}
 exit 0
 
 %post
@@ -54,6 +52,9 @@ cp -p %{_sysconfdir}/httpd/conf/httpd.conf %{_sysconfdir}/httpd/conf/httpd.conf.
 sed -i -r 's/(^Include conf.d\/thruk.conf)/\1\nInclude conf.d\/nrdp.conf\n/' %{_sysconfdir}/httpd/conf/httpd.conf
 cp -p %{_sysconfdir}/php.ini %{_sysconfdir}/php.ini.$(date +%Y%m%d)
 sed -r -i 's/(^open_basedir.*$)/\1:\/srv\/rgm\/nrdp/' /etc/php.ini
+
+sed -i "s/NRDP_DEFAULT_PASSWORD/$(/usr/share/rgm/random.sh -l 32 -h)/" %{datadir}/server/config.inc.php
+
 service httpd reload >/dev/null 2>&1
 
 %postun
@@ -71,7 +72,7 @@ service httpd reload >/dev/null 2>&1
 %{__rm} -rf %{buildroot}
 
 %files
-%defattr(0640,%{appuser},%{appgroup},0750)
+%defattr(0640,%{rgm_user_nagios},%{rgm_group},0750)
 %dir %{_localstatedir}/tmp/%{name}
 %config(noreplace) %attr(0644,root,root) %{_sysconfdir}/httpd/conf.d/%{name}.conf
 %dir %{datadir}
@@ -97,9 +98,15 @@ service httpd reload >/dev/null 2>&1
 %{datadir}/LICENSE.TXT
 
 %changelog
+* Mon May 06 2019 Eric Belhomme <ebelhomme@fr.scc.com> - 1.4-1.rgm
+- use rgm-macros
+- NRDP token randomizaton during post-install
+
 * Fri Mar 01 2019 Michael Aubertin <maubertin@fr.scc.com> - 1.4-0.rgm
 - Update version
+
 * Fri Feb 22 2019 Michael Aubertin <maubertin@fr.scc.com> - 1.2-0.rgm
 - Initial fork
+
 * Mon Jul  6 2015 Guillaume ONA <contribution@eyesofnetwork.com> - 1.2-0.eon 
 - Build for EyesOfNetwork

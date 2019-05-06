@@ -11,7 +11,8 @@
 // NOTE: tokens are just alphanumeric strings - make them hard to guess!
 $cfg['authorized_tokens'] = array(
         //"mysecrettoken",  // <-- not a good token
-        "c25a488c6bdb787bb09c8789e458e22d",   // <-- a better token (don't use this exact one, make your own)
+        //"c25a488c6bdb787bb09c8789e458e22d",   // <-- a better token (don't use this exact one, make your own)
+        "NRDP_DEFAULT_PASSWORD", // <-- auto-generated token at package post-installation
         );
 
 // do we require that HTTPS be used to access NRDP?
