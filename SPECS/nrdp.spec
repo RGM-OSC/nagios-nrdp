@@ -37,6 +37,7 @@ cd ..
 install -d -m0755 %{buildroot}%{_localstatedir}/tmp/%{name}
 install -d -m0755 %{buildroot}%{datadir}
 cp -afpvr %{name}-%{version}/* %{buildroot}%{datadir}
+install -d -m0755 %{buildroot}%{rgm_docdir}/httpd
 install -D -m 0644 %{name}-%{version}/httpd-nrdp.example.conf %{buildroot}%{rgm_docdir}/httpd/
 
 %pre
