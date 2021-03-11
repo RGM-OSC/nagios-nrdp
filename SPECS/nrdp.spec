@@ -37,7 +37,7 @@ cd ..
 install -d -m0755 %{buildroot}%{_localstatedir}/tmp/%{name}
 install -d -m0755 %{buildroot}%{datadir}
 install -d -m0755 %{buildroot}%{rgm_docdir}/httpd
-install -D -m 0644 %{name}-%{version}/httpd-nrdp.example.conf %{buildroot}%{rgm_docdir}/httpd/
+install -D -m 0644 %{_builddir}/%{name}-%{version}/httpd-nrdp.example.conf %{buildroot}%{rgm_docdir}/httpd/
 cp -afpvr %{name}-%{version}/* %{buildroot}%{datadir}
 
 
@@ -83,7 +83,7 @@ service httpd reload >/dev/null 2>&1
 %attr(0750,-,-) %{datadir}/clients/send_nrdp.php
 %attr(0750,-,-) %{datadir}/clients/send_nrdp.sh
 %{datadir}/clients/sample.xml
-%{datadir}/nrdp.conf
+%doc %{datadir}/httpd-nrdp.example.conf
 %{datadir}/CHANGES.TXT
 %dir %{datadir}/server
 %config(noreplace) %{datadir}/server/config.inc.php
