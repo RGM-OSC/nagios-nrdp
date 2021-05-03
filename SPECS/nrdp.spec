@@ -1,6 +1,6 @@
 Name: nrdp
 Version: 1.4
-Release            : 1.rgm
+Release            : 2.rgm
 Summary            : NRDP module for Nagios
 License            : BSD
 URL                : https://exchange.nagios.org/directory/Addons/Passive-Checks/NRDP--2D-Nagios-Remote-Data-Processor/details
@@ -36,8 +36,10 @@ fit individual users' needs. It uses standard ports protocols
 cd ..
 install -d -m0755 %{buildroot}%{_localstatedir}/tmp/%{name}
 install -d -m0755 %{buildroot}%{datadir}
+install -d -m0755 %{buildroot}%{rgm_docdir}/httpd
+install -D -m 0644 %{_builddir}/%{name}-%{version}/httpd-nrdp.example.conf %{buildroot}%{rgm_docdir}/httpd/
 cp -afpvr %{name}-%{version}/* %{buildroot}%{datadir}
-install -D -m 0644 %{name}-%{version}/%{name}.conf %{buildroot}/%{_sysconfdir}/httpd/conf.d/%{name}.conf
+
 
 %pre
 getent group %{rgm_group} >/dev/null || groupadd -r %{rgm_group}
@@ -48,10 +50,11 @@ exit 0
 
 %post
 ln -sf %{datadir} %{linkdir}
-cp -p %{_sysconfdir}/httpd/conf/httpd.conf %{_sysconfdir}/httpd/conf/httpd.conf.$(date +%Y%m%d)
-sed -i -r 's/(^Include conf.d\/thruk.conf)/\1\nInclude conf.d\/nrdp.conf\n/' %{_sysconfdir}/httpd/conf/httpd.conf
 cp -p %{_sysconfdir}/php.ini %{_sysconfdir}/php.ini.$(date +%Y%m%d)
 sed -r -i 's/(^open_basedir.*$)/\1:\/srv\/rgm\/nrdp/' /etc/php.ini
+if [ -e %{_sysconfdir}/httpd/conf.d/%{name}.conf ]; then
+    rm -f %{_sysconfdir}/httpd/conf.d/%{name}.conf
+fi
 
 sed -i "s/NRDP_DEFAULT_PASSWORD/$(/usr/share/rgm/random.sh -l 32 -h)/" %{datadir}/server/config.inc.php
 
@@ -62,8 +65,6 @@ unlink %{linkdir} >/dev/null 2>&1
 rm -Rf %{datadir} >/dev/null 2>&1
 
 %preun
-cp -p %{_sysconfdir}/httpd/conf/httpd.conf %{_sysconfdir}/httpd/conf/httpd.conf.$(date +%Y%m%d)
-sed -i -r 's/^Include conf\.d\/nrdp\.conf$//' /etc/httpd/conf/httpd.conf
 cp -p %{_sysconfdir}/php.ini %{_sysconfdir}/php.ini.$(date +%Y%m%d)
 sed -r -i 's/:\/srv\/rgm\/nrdp//' /etc/php.ini
 service httpd reload >/dev/null 2>&1
@@ -71,17 +72,18 @@ service httpd reload >/dev/null 2>&1
 %clean
 %{__rm} -rf %{buildroot}
 
+
 %files
+%doc %{rgm_docdir}/httpd/httpd-nrdp.example.conf
 %defattr(0640,%{rgm_user_nagios},%{rgm_group},0750)
 %dir %{_localstatedir}/tmp/%{name}
-%config(noreplace) %attr(0644,root,root) %{_sysconfdir}/httpd/conf.d/%{name}.conf
 %dir %{datadir}
 %{datadir}/INSTALL.TXT
 %dir %{datadir}/clients
 %attr(0750,-,-) %{datadir}/clients/send_nrdp.php
 %attr(0750,-,-) %{datadir}/clients/send_nrdp.sh
 %{datadir}/clients/sample.xml
-%{datadir}/nrdp.conf
+%doc %{datadir}/httpd-nrdp.example.conf
 %{datadir}/CHANGES.TXT
 %dir %{datadir}/server
 %config(noreplace) %{datadir}/server/config.inc.php
@@ -98,6 +100,9 @@ service httpd reload >/dev/null 2>&1
 %{datadir}/LICENSE.TXT
 
 %changelog
+* Thu Mar 11 2021 Eric Belhomme <ebelhomme@fr.scc.com> - 1.4-2.rgm
+- move httpd config file as example file in /usr/share/doc/rgm/httpd/
+
 * Mon May 06 2019 Eric Belhomme <ebelhomme@fr.scc.com> - 1.4-1.rgm
 - use rgm-macros
 - NRDP token randomizaton during post-install
