@@ -1,10 +1,6 @@
-%define name nrdp
-%define version 1.4
-%define release 2.rgm
-
-Name               : %{name}
-Version            : %{version}
-Release            : %{release}
+Name               : nrdp
+Version            : 1.4
+Release            : 2.rgm
 Summary            : NRDP module for Nagios
 License            : BSD
 URL                : https://exchange.nagios.org/directory/Addons/Passive-Checks/NRDP--2D-Nagios-Remote-Data-Processor/details
