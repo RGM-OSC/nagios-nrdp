@@ -1,6 +1,10 @@
-Name: nrdp
-Version: 1.4
-Release            : 2.rgm
+%define name nrdp
+%define version 1.4
+%define release 2.rgm
+
+Name               : %{name}
+Version            : %{version}
+Release            : %{release}
 Summary            : NRDP module for Nagios
 License            : BSD
 URL                : https://exchange.nagios.org/directory/Addons/Passive-Checks/NRDP--2D-Nagios-Remote-Data-Processor/details
@@ -19,10 +23,10 @@ Provides           : ndrp
 
 
 %description
-Nagios Remote Data Processor (NDRP) is a flexible data transport mechanism 
-and processor for Nagios. It is designed with a simple and powerful 
-architecture that allows for it to be easily extended and customized to 
-fit individual users' needs. It uses standard ports protocols 
+Nagios Remote Data Processor (NDRP) is a flexible data transport mechanism
+and processor for Nagios. It is designed with a simple and powerful
+architecture that allows for it to be easily extended and customized to
+fit individual users' needs. It uses standard ports protocols
 (HTTP(S) and XML) and can be implemented as a replacement for NSCA.
 
 %prep
@@ -114,5 +118,5 @@ service httpd reload >/dev/null 2>&1
 * Fri Feb 22 2019 Michael Aubertin <maubertin@fr.scc.com> - 1.2-0.rgm
 - Initial fork
 
-* Mon Jul  6 2015 Guillaume ONA <contribution@eyesofnetwork.com> - 1.2-0.eon 
+* Mon Jul  6 2015 Guillaume ONA <contribution@eyesofnetwork.com> - 1.2-0.eon
 - Build for EyesOfNetwork
