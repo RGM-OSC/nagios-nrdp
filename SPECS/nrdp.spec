@@ -1,6 +1,6 @@
 Name               : nrdp
 Version            : 1.4
-Release            : 2.rgm
+Release            : 3.rgm
 Summary            : NRDP module for Nagios
 License            : BSD
 URL                : https://exchange.nagios.org/directory/Addons/Passive-Checks/NRDP--2D-Nagios-Remote-Data-Processor/details
@@ -58,7 +58,7 @@ fi
 
 sed -i "s/NRDP_DEFAULT_PASSWORD/$(/usr/share/rgm/random.sh -l 32 -h)/" %{datadir}/server/config.inc.php
 
-service httpd reload >/dev/null 2>&1
+systemctl restart httpd >/dev/null 2>&1
 
 %postun
 unlink %{linkdir} >/dev/null 2>&1
@@ -67,7 +67,7 @@ rm -Rf %{datadir} >/dev/null 2>&1
 %preun
 cp -p %{_sysconfdir}/php.ini %{_sysconfdir}/php.ini.$(date +%Y%m%d)
 sed -r -i 's/:\/srv\/rgm\/nrdp//' /etc/php.ini
-service httpd reload >/dev/null 2>&1
+systemctl restart httpd >/dev/null 2>&1
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -100,6 +100,9 @@ service httpd reload >/dev/null 2>&1
 %{datadir}/LICENSE.TXT
 
 %changelog
+* Wed May 24 2023 Alex Rocher <arocher@fr.scc.com> - 1.4-3.rgm
+- Fix httpd restart
+
 * Thu Mar 11 2021 Eric Belhomme <ebelhomme@fr.scc.com> - 1.4-2.rgm
 - move httpd config file as example file in /usr/share/doc/rgm/httpd/
 
