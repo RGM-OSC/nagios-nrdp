@@ -15,9 +15,9 @@ register_callback(CALLBACK_PROCESS_REQUEST,'nagioscorecmd_process_request');
 function nagioscorecmd_process_request($cbtype,$args){
 
 	$cmd=grab_array_var($args,"cmd");
-	
+
 	//echo "CMD=$cmd<BR>";
-	
+
 	switch($cmd){
 		// raw nagios external commands
 		case "submitrawcmd":
@@ -40,9 +40,9 @@ function nagioscorecmd_process_request($cbtype,$args){
 
 function nagioscorecmd_submit_nagios_command($raw=false){
 	global $cfg;
-	
+
 	$command=grab_request_var("command");
-	
+
 	// make sure we have a command
 	if(!have_value($command))
 		handle_api_error(ERROR_NO_COMMAND);
@@ -54,14 +54,14 @@ function nagioscorecmd_submit_nagios_command($raw=false){
 		handle_api_error(ERROR_BAD_COMMAND_FILE);
 	if(!is_writeable($cfg["command_file"]))
 		handle_api_error(ERROR_COMMAND_FILE_OPEN_WRITE);
-		
+
 	// open external command file
 	if(($handle=@fopen($cfg["command_file"],"w+"))===false)
 		handle_api_error(ERROR_COMMAND_FILE_OPEN);
-		
+
 	// get current time
 	$ts=time();
-		
+
 	// write the external command(s)
 	$error=false;
 	if(!is_array($command)){
@@ -86,9 +86,9 @@ function nagioscorecmd_submit_nagios_command($raw=false){
 
 	if($result===false)
 		handle_api_error(ERROR_BAD_WRITE);
-	
+
 	output_api_header();
-	
+
 	echo "<result>\n";
 	echo "  <status>0</status>\n";
 	echo "  <message>OK</message>\n";
@@ -99,9 +99,9 @@ function nagioscorecmd_submit_nagios_command($raw=false){
 
 function nagioscorecmd_submit_live_command($raw=false){
 	global $cfg;
-	
+
 	$command=grab_request_var("command");
-	
+
 	// // make sure we have a command
 	if(!have_value($command))
 	 	handle_api_error(ERROR_NO_COMMAND);
@@ -111,15 +111,15 @@ function nagioscorecmd_submit_live_command($raw=false){
 	 	handle_api_error(ERROR_NO_mk_livestatus_FILE);
 	 if(!file_exists($cfg["mk_livestatus"]))
 	 	handle_api_error(ERROR_BAD_mk_livestatus_FILE);
-	
-	$live_return = shell_exec('printf "'.$command.'\n" | /srv/rgm/mk-livestatus/bin/unixcat /srv/rgm/nagios/var/log/rw/live');	
+
+	$live_return = shell_exec('/usr/bin/printf "'.$command.'\n" | /srv/rgm/mk-livestatus/bin/unixcat /srv/rgm/nagios/var/log/rw/live');
 
 	if ( $fp === "" ) {
 	    $live_return = "Empty return";
-	} 
-	
+	}
+
 	output_api_header();
-	
+
 	echo "<result>\n";
 	echo "  <status>0</status>\n";
 	echo "  <message>".$live_return."</message>\n";
