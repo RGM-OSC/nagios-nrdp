@@ -1,6 +1,6 @@
 Name               : nrdp
 Version            : 1.4
-Release            : 3.rgm
+Release            : 4.rgm
 Summary            : NRDP module for Nagios
 License            : BSD
 URL                : https://exchange.nagios.org/directory/Addons/Passive-Checks/NRDP--2D-Nagios-Remote-Data-Processor/details
@@ -100,6 +100,9 @@ systemctl restart httpd >/dev/null 2>&1
 %{datadir}/LICENSE.TXT
 
 %changelog
+* Wed Jun 14 2023 Vincent Fricou <vfricou@fr.scc.com> - 1.4-4.rgm
+- Fix shell binary absolute path
+
 * Wed May 24 2023 Alex Rocher <arocher@fr.scc.com> - 1.4-3.rgm
 - Fix httpd restart
 
